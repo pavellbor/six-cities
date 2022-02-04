@@ -1,28 +1,55 @@
 import { Link } from 'react-router-dom';
+import { ScreenType } from '../../const';
 import { Offer } from '../../types/offer';
 
 type OfferCardProps = {
   offer: Offer;
-  isFavoriteScreen: boolean;
-  onMouseEnter: () => void;
+  screenType: string;
+  onHoverHandler: () => void;
 };
 
 function OfferCard(props: OfferCardProps): JSX.Element {
-  const { offer, isFavoriteScreen, onMouseEnter } = props;
+  const { offer, screenType, onHoverHandler } = props;
   const { id, isPremium, previewImage, price, rating, title, type, isFavorite } = offer;
   const widthRating = `${(100 * rating) / 5}%`;
   const cardPath = `/offer/${id}`;
 
+  let placeCardClassName = '';
+  let placeCardImageWrapperClassName = '';
+  let placeCardImageWidth = '';
+  let placeCardImageHeight = '';
+
+  switch (screenType) {
+    case ScreenType.MAIN:
+      placeCardClassName = 'cities__place-card';
+      placeCardImageWrapperClassName = 'cities__image-wrapper';
+      placeCardImageWidth = '260';
+      placeCardImageHeight = '200';
+      break;
+    case ScreenType.FAVORITE:
+      placeCardClassName = 'favorites__card';
+      placeCardImageWrapperClassName = 'favorites__image-wrapper';
+      placeCardImageWidth = '150';
+      placeCardImageHeight = '110';
+      break;
+    case ScreenType.OFFER:
+      placeCardClassName = 'near-places__card';
+      placeCardImageWrapperClassName = 'near-places__image-wrapper';
+      placeCardImageWidth = '260';
+      placeCardImageHeight = '200';
+  }
+
+
   return (
-    <article className={`place-card ${isFavoriteScreen ? 'favorites__card' : 'cities__place-card'}`} onMouseEnter={onMouseEnter}>
+    <article className={`place-card ${placeCardClassName}`} onMouseEnter={onHoverHandler}>
       {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
       )}
-      <div className={`place-card__image-wrapper ${isFavoriteScreen ? 'favorites__image-wrapper' : 'cities__image-wrapper'}`}>
+      <div className={`place-card__image-wrapper ${placeCardImageWrapperClassName}`}>
         <Link to={cardPath}>
-          <img className="place-card__image" src={previewImage} width={isFavoriteScreen ? '150' : '260'} height={isFavoriteScreen ? '110' : '200'} alt="Place image" />
+          <img className="place-card__image" src={previewImage} width={placeCardImageWidth} height={placeCardImageHeight} alt="Place image" />
         </Link>
       </div>
       <div className="place-card__info">

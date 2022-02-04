@@ -1,4 +1,5 @@
 import { Offer } from '../../types/offer';
+import { ScreenType } from '../../const';
 import OfferList from '../offer-list/offer-list';
 
 type FavoriteScreenProps = {
@@ -51,7 +52,7 @@ function FavoritesScreen(props: FavoriteScreenProps): JSX.Element {
                     </a>
                   </div>
                 </div>
-                <OfferList offers={offers} isFavoriteScreen/>
+                <OfferList offers={offers} screenType={ScreenType.FAVORITE}/>
               </li>
             </ul>
           </section>

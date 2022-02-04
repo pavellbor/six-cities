@@ -1,4 +1,7 @@
+import { useState } from 'react';
+import { ScreenType } from '../../const';
 import { Offer } from '../../types/offer';
+import Map from '../map/map';
 import OfferList from '../offer-list/offer-list';
 
 type MainScreenProps = {
@@ -7,6 +10,13 @@ type MainScreenProps = {
 };
 
 function MainScreen({ offerCount: placesCount, offers }: MainScreenProps): JSX.Element {
+  const city = offers[0].city;
+  const [selectedPoint, setSelectedPoint] = useState<Offer | null>(null);
+
+  const listItemHoverHandler = (offer: Offer) => {
+    setSelectedPoint(offer);
+  };
+
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -95,10 +105,12 @@ function MainScreen({ offerCount: placesCount, offers }: MainScreenProps): JSX.E
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <OfferList offers={offers} isFavoriteScreen={false}/>
+              <OfferList offers={offers} screenType={ScreenType.MAIN} listItemHoverHandler={listItemHoverHandler} />
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <section className="cities__map map">
+                <Map city={city} points={offers} selectedPoint={selectedPoint} />
+              </section>
             </div>
           </div>
         </div>
